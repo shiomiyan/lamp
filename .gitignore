@@ -1,0 +1,3 @@
+config/data/
+config/certs/*.key
+config/certs/*.pem

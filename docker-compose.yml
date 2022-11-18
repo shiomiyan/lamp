@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: ./config/php
+      dockerfile: Dockerfile
+    container_name: php
+    volumes:
+      - ./app:/var/www/html
+      - ./config/php/conf:/etc/apache2/sites-enabled
+      - ./config/certs:/etc/ssl/local/certs
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - ./config/mysql/data:/var/lib/mysql
+      - ./config/mysql/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+    ports:
+      - 3306:3306
